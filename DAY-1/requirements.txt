@@ -1,0 +1,12 @@
+langchain-groq
+langchain-community
+langchain-core
+langchain
+langgraph
+crewai
+crewai[tools]
+pandas
+python-dotenv
+streamlit
+requests
+
