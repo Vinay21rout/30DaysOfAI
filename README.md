@@ -16,41 +16,40 @@ The goal is not perfection, but **consistency, creativity, and growth** — buil
 
 ## ✅ Consistency Tracker
 
-| Day | Date | Project Title | Submission Time | Status |
-|-----|------|---------------|-----------------|--------|
-| 01  | --   | --            | --              | [ ] Pending |
-| 02  | --   | --            | --              | [ ] Pending |
-| 03  | --   | --            | --              | [ ] Pending |
-| 04  | --   | --            | --              | [ ] Pending |
-| 05  | --   | --            | --              | [ ] Pending |
-| 06  | --   | --            | --              | [ ] Pending |
-| 07  | --   | --            | --              | [ ] Pending |
-| 08  | --   | --            | --              | [ ] Pending |
-| 09  | --   | --            | --              | [ ] Pending |
-| 10  | --   | --            | --              | [ ] Pending |
-| 11  | --   | --            | --              | [ ] Pending |
-| 12  | --   | --            | --              | [ ] Pending |
-| 13  | --   | --            | --              | [ ] Pending |
-| 14  | --   | --            | --              | [ ] Pending |
-| 15  | --   | --            | --              | [ ] Pending |
-| 16  | --   | --            | --              | [ ] Pending |
-| 17  | --   | --            | --              | [ ] Pending |
-| 18  | --   | --            | --              | [ ] Pending |
-| 19  | --   | --            | --              | [ ] Pending |
-| 20  | --   | --            | --              | [ ] Pending |
-| 21  | --   | --            | --              | [ ] Pending |
-| 22  | --   | --            | --              | [ ] Pending |
-| 23  | --   | --            | --              | [ ] Pending |
-| 24  | --   | --            | --              | [ ] Pending |
-| 25  | --   | --            | --              | [ ] Pending |
-| 26  | --   | --            | --              | [ ] Pending |
-| 27  | --   | --            | --              | [ ] Pending |
-| 28  | --   | --            | --              | [ ] Pending |
-| 29  | --   | --            | --              | [ ] Pending |
-| 30  | --   | --            | --              | [ ] Pending |
+| Day | Date | Project Title | Tech Used | Status |
+|:---:|------|---------------|-----------|:------:|
+| 01 | 06 Jul 2025 | [AI Lead Generation Automation](./DAY-1/README.md) | LangGraph · Apify · Groq · Streamlit | ✅ Done |
+| 02 | -- | -- | -- | ⏳ Pending |
+| 03 | -- | -- | -- | ⏳ Pending |
+| 04 | -- | -- | -- | ⏳ Pending |
+| 05 | -- | -- | -- | ⏳ Pending |
+| 06 | -- | -- | -- | ⏳ Pending |
+| 07 | -- | -- | -- | ⏳ Pending |
+| 08 | -- | -- | -- | ⏳ Pending |
+| 09 | -- | -- | -- | ⏳ Pending |
+| 10 | -- | -- | -- | ⏳ Pending |
+| 11 | -- | -- | -- | ⏳ Pending |
+| 12 | -- | -- | -- | ⏳ Pending |
+| 13 | -- | -- | -- | ⏳ Pending |
+| 14 | -- | -- | -- | ⏳ Pending |
+| 15 | -- | -- | -- | ⏳ Pending |
+| 16 | -- | -- | -- | ⏳ Pending |
+| 17 | -- | -- | -- | ⏳ Pending |
+| 18 | -- | -- | -- | ⏳ Pending |
+| 19 | -- | -- | -- | ⏳ Pending |
+| 20 | -- | -- | -- | ⏳ Pending |
+| 21 | -- | -- | -- | ⏳ Pending |
+| 22 | -- | -- | -- | ⏳ Pending |
+| 23 | -- | -- | -- | ⏳ Pending |
+| 24 | -- | -- | -- | ⏳ Pending |
+| 25 | -- | -- | -- | ⏳ Pending |
+| 26 | -- | -- | -- | ⏳ Pending |
+| 27 | -- | -- | -- | ⏳ Pending |
+| 28 | -- | -- | -- | ⏳ Pending |
+| 29 | -- | -- | -- | ⏳ Pending |
+| 30 | -- | -- | -- | ⏳ Pending |
 
-👉 Use `[x]` for completed tasks and `[ ]` for pending ones.  
-👉 Add **date + submission time** when you push each project.  
+> ✅ Done &nbsp;·&nbsp; ⏳ Pending &nbsp;·&nbsp; 🔄 In Progress  
 
 ---
 
