@@ -8,15 +8,21 @@ An agentic pipeline that scrapes business leads from Google Maps, parses the rel
 ## 🔁 Workflow
 
 ```
-User Input (search query)
+User Input (search query + max places)
         ↓
-  Scraper Agent       → hits Apify Google Maps API → saves leads.csv
+  Scraper Agent       → hits Apify Google Maps API → saves all raw data to leads.csv
         ↓
-  Parser Agent        → reads leads.csv row by row → saves parsed_leads.csv
+  Parser Agent        → reads leads.csv row by row → extracts relevant fields → saves parsed_leads.csv
         ↓
-  Email Writer Agent  → reads first parsed lead → generates cold email via Groq LLM
+  Email Writer Agent  → 1 Groq API call generates a template with {{NAME}} {{CATEGORY}} {{ADDRESS}}
+                      → replaces placeholders for every lead WITHOUT a website (0 extra API calls)
+                      → leads WITH a website get email_draft = None (skipped)
+                      → saves email_draft column back to parsed_leads.csv
         ↓
-  Streamlit UI        → displays leads table + email draft + export options
+  Streamlit UI        → Leads Table: shows ALL leads (with + without website)
+                      → Email Draft: selectbox shows only no-website leads with their drafts
+                      → Export: full CSV with email_draft column
+                      → History: every unique query stored in session, no duplicates
 ```
 
 ---
@@ -70,9 +76,10 @@ streamlit run app.py
 ## 🖥 UI Features
 - Search query input + max places slider
 - Live workflow step tracker (⬜ → 🔄 → ✅)
-- Leads table with metrics (total, with phone, with website)
-- Generated cold email draft with download button
-- Export leads as CSV
+- Leads Table: all scraped leads with metrics (total, targets without website, with phone)
+- Email Draft: selectbox per lead — only no-website leads shown, 1 API call for all
+- Export: download full CSV including email drafts
+- History Panel: every unique query stored with timestamp, lead count, and CSV download — no duplicates
 
 ---
 
@@ -111,6 +118,28 @@ This was not a smooth build. Here's every real issue I hit and how I fixed it:
 - Every button click caused Streamlit to re-import the module, rebuilding the entire LangGraph graph
 - Fix: Wrapped the import in `@st.cache_resource` so the pipeline is compiled once and reused
 
-**8. `LeadState` type mismatch**
-- Defined `lead: dict` in TypedDict but scraper was setting it to a `list` of all leads, then parser set it back to a `dict` of one lead
-- Fix: Separated concerns — scraper saves to `leads.csv`, parser reads it and saves `parsed_leads.csv`, state only carries file paths between agents
+**9. Email generated only for first lead**
+- Initially the email writer only processed `leads[0]` and returned a single draft
+- Fix: Generate one LLM template with `{{NAME}}`, `{{CATEGORY}}`, `{{ADDRESS}}` placeholders, then do string `.replace()` for every lead — 1 API call total regardless of lead count
+
+**10. Leads with websites being excluded from the table**
+- Wanted all leads in the table but emails only for those without websites
+- First attempt filtered the entire df to no-website leads only — so leads with websites disappeared everywhere
+- Fix: Return all leads from `run_pipeline`, filter to no-website only inside the Email Draft tab in the UI
+
+**11. `row.get()` silently returning None on pandas Series**
+- Was using `row.get("website")` inside `iterrows()` — pandas Series does have `.get()` but it behaves differently from dict `.get()` and was returning `None` for all website values
+- This caused the website filter to treat every lead as having no website
+- Fix: Use direct `row["column"]` with explicit `pd.notna()` check instead
+
+**12. Results disappearing when switching tabs or selecting a different lead**
+- Streamlit reruns the entire script on every interaction — clicking a selectbox or switching tabs reset `run_btn` to `False`, wiping all results
+- Fix: Store results in `st.session_state.current_df` after pipeline runs, render all tabs from session state outside the `if run_btn:` block
+
+**13. `st.stop()` blocking tab rendering**
+- Had `st.stop()` after the empty query warning — this halted the entire script so tabs never rendered on rerun
+- Fix: Replaced with `else:` block so warning shows but tabs still render below
+
+**14. `st.cache_resource.clear()` wiping cache on every rerun**
+- Added it to force fresh imports but it was clearing the cached pipeline on every single Streamlit rerun, defeating the purpose
+- Fix: Removed it — just do a full Streamlit restart (`Ctrl+C` + rerun) when backend code changes

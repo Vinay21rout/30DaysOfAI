@@ -41,36 +41,52 @@ def parser_agent(state: LeadState) -> LeadState:
     parsed = []
     for _, row in df.iterrows():
         parsed.append({
-            "name":     row.get("title"),
-            "category": row.get("categoryName"),
-            "address":  row.get("address"),
-            "phone":    row.get("phone"),
-            "email":    row.get("email"),
-            "website":  row.get("website"),
-            "rating":   row.get("totalScore"),
+            "name":     row["title"]     if "title"        in row and pd.notna(row["title"])        else None,
+            "category": row["categoryName"] if "categoryName" in row and pd.notna(row["categoryName"]) else None,
+            "address":  row["address"]   if "address"      in row and pd.notna(row["address"])      else None,
+            "phone":    row["phone"]     if "phone"        in row and pd.notna(row["phone"])        else None,
+            "email":    row["email"]     if "email"        in row and pd.notna(row["email"])        else None,
+            "website":  row["website"]   if "website"      in row and pd.notna(row["website"])      else None,
+            "rating":   row["totalScore"] if "totalScore"  in row and pd.notna(row["totalScore"])   else None,
         })
     parsed_path = os.path.join(os.path.dirname(__file__), "parsed_leads.csv")
     pd.DataFrame(parsed).to_csv(parsed_path, index=False)
     return {**state, "parsed_path": parsed_path, "lead": parsed[0]}
 
 def email_writer_agent(state: LeadState) -> LeadState:
-    lead = state["lead"]
-    name     = lead.get("name")     or "the business owner"
-    category = lead.get("category") or "business"
-    address  = lead.get("address")  or ""
-    prompt = f"You are an outreach email writer. Write a professional but friendly cold email to {name}, who runs a {category}"
-    if address:
-        prompt += f" located at {address}."
-    prompt += " Explain how a simple website can help attract more customers. Keep it concise and end with a clear call to action. Do not invent missing details. Mark the draft as 'Pending Approval'."
-    prompt += """
+    df = pd.read_csv(state["parsed_path"])
 
-Sign off the email with:
+    prompt = """You are an outreach email writer. Write a professional cold email to {{NAME}}, who runs a {{CATEGORY}} located at {{ADDRESS}}.
+Explain how a simple website can help attract more customers.
+Keep it concise, well structured with subject line, body, and sign-off.
+Use exactly these placeholders in the email: {{NAME}}, {{CATEGORY}}, {{ADDRESS}}.
+Do not replace them — keep them as-is. Mark the draft as 'Pending Approval'.
+
+Sign off with:
 Best regards,
 Vinay
 LeadGen
 Phone: +91 8709265396
 Email: routvinay83@gmail.com"""
-    return {**state, "email": llm_groq.invoke(prompt).content}
+
+    template = llm_groq.invoke(prompt).content
+
+    emails = []
+    for _, row in df.iterrows():
+        has_website = pd.notna(row["website"]) and str(row["website"]).strip() not in ["", "nan", "None"]
+        if has_website:
+            emails.append(None)
+            continue
+        name     = str(row["name"])     if pd.notna(row["name"])     else "Business Owner"
+        category = str(row["category"]) if pd.notna(row["category"]) else "business"
+        address  = str(row["address"])  if pd.notna(row["address"])  else "your location"
+        emails.append(template.replace("{{NAME}}", name).replace("{{CATEGORY}}", category).replace("{{ADDRESS}}", address))
+
+    df["email_draft"] = emails
+    df.to_csv(state["parsed_path"], index=False)
+
+    first_email = next((e for e in emails if e is not None), "")
+    return {**state, "email": first_email}
 
 workflow = StateGraph(LeadState)
 workflow.add_node("scraper", scraper_agent)
@@ -87,7 +103,7 @@ def run_pipeline(category: str, max_places: int) -> tuple[pd.DataFrame, str]:
     parsed_path = result.get("parsed_path", "")
     if not parsed_path or not os.path.exists(parsed_path):
         raise RuntimeError(f"parsed_leads.csv not created. Pipeline state: {result}")
-    df = pd.read_csv(parsed_path)
+    df = pd.read_csv(parsed_path)  # all leads
     return df, result["email"]
 
 if __name__ == "__main__":
