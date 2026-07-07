@@ -116,20 +116,41 @@ with st.sidebar:
         st.markdown(f"<div class='sidebar-stat'><div class='val'>{st.session_state.docs_count}</div><div class='lbl'>Docs</div></div>", unsafe_allow_html=True)
 
     st.divider()
-    st.markdown("### 🔄 Pipeline Flow")
-    st.markdown("""
-    <div style='color:#6b7280;font-size:0.82rem;line-height:2'>
-    🟣 <b style='color:#a78bfa'>START</b><br>
-    &nbsp;&nbsp;&nbsp;↓<br>
-    🔵 <b style='color:#60a5fa'>Classifier</b><br>
-    &nbsp;&nbsp;&nbsp;↓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
-    💬 <b style='color:#34d399'>Chat</b>&nbsp;&nbsp;&nbsp;&nbsp;📄 <b style='color:#f59e0b'>Docs</b><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🔍 <b style='color:#f59e0b'>RAG</b><br>
-    &nbsp;&nbsp;&nbsp;↓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
-    🏁 <b style='color:#a78bfa'>END</b>
+    st.markdown("### 🗺️ Pipeline Sketch")
+    st.components.v1.html("""
+    <div style="background:#0d0f1a;padding:12px;border-radius:12px;border:1px solid #1e2130">
+      <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+      <script>mermaid.initialize({startOnLoad:true, theme:'dark', themeVariables:{
+        primaryColor:'#1e2130', primaryTextColor:'#e2e8f0', primaryBorderColor:'#6366f1',
+        lineColor:'#4b5563', secondaryColor:'#1a1f35', tertiaryColor:'#0d0f1a',
+        edgeLabelBackground:'#0d0f1a', fontSize:'13px'
+      }});</script>
+      <div class="mermaid">
+        flowchart TD
+          A([START]) --> B[Classifier\nLLM: chat or docs?]
+          B --> C{route?}
+          C -->|chat| D[Chat Node\nLLM stream]
+          C -->|docs| E[Fetch\nDDG + requests]
+          E --> F[Chunk\nRecursiveTextSplit]
+          F --> G[Embed\nMiniLM + Chroma]
+          G --> H[Retrieve\ntop-k=8 chunks]
+          H --> I[Answer\nGroq stream]
+          D --> Z([END])
+          I --> Z
+
+          style A fill:#1a1035,stroke:#a78bfa,stroke-dasharray:5
+          style Z fill:#1a1035,stroke:#a78bfa,stroke-dasharray:5
+          style B fill:#1e2130,stroke:#6366f1
+          style C fill:#1a1f35,stroke:#6366f1
+          style D fill:#1e2130,stroke:#34d399,color:#34d399
+          style E fill:#1e2130,stroke:#f59e0b,color:#f59e0b
+          style F fill:#1e2130,stroke:#f59e0b,color:#f59e0b
+          style G fill:#1e2130,stroke:#f59e0b,color:#f59e0b
+          style H fill:#1e2130,stroke:#f59e0b,color:#f59e0b
+          style I fill:#1e2130,stroke:#06b6d4,color:#06b6d4
+      </div>
     </div>
-    """, unsafe_allow_html=True)
+    """, height=520)
 
     st.divider()
     if st.button("🗑️ Clear Chat", use_container_width=True):
