@@ -1,0 +1,13 @@
+langchain
+chromadb 
+sentence-transformers 
+requests 
+beautifulsoup4 
+PyPDF2
+langchain_text_splitters
+langchain-google-genai
+# duckduckgo-search
+ddgs
+langchain-chroma
+langchain-classic
+streamlit

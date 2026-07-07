@@ -19,7 +19,7 @@ The goal is not perfection, but **consistency, creativity, and growth** — buil
 | Day | Date | Project Title | Tech Used | Status |
 |:---:|------|---------------|-----------|:------:|
 | 01 | 06 Jul 2025 | [AI Lead Generation Automation](./DAY-1/README.md) | LangGraph · Apify · Groq · Streamlit | ✅ Done |
-| 02 | -- | -- | -- | ⏳ Pending |
+| 02 | 07 Jul 2025 | [DocuMind AI – Web RAG Chat Assistant](./DAY-2/README.md) | LangGraph · Groq · DuckDuckGo · Chroma · HuggingFace · Streamlit | ✅ Done |
 | 03 | -- | -- | -- | ⏳ Pending |
 | 04 | -- | -- | -- | ⏳ Pending |
 | 05 | -- | -- | -- | ⏳ Pending |
