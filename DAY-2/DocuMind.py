@@ -134,13 +134,14 @@ def run_pipeline(user_input: str) -> dict:
     safe_input = user_input[:500].replace("\n", " ").replace("\r", " ")
     return pipeline.invoke({"user_input": safe_input, "category": "", "urls": [], "raw_html": [], "chunks": [], "response": ""})
 
-def stream_pipeline(user_input: str):
-    """Yields (token, final_result) — token is str while streaming, None when done with result dict."""
+def stream_pipeline(user_input: str, category: str = ""):
+    """Yields (token, final_result). Pass category if already classified to skip re-classification."""
     safe_input = user_input[:500].replace("\n", " ").replace("\r", " ")
-    state = {"user_input": safe_input, "category": "", "urls": [], "raw_html": [], "chunks": [], "response": ""}
+    state = {"user_input": safe_input, "category": category, "urls": [], "raw_html": [], "chunks": [], "response": ""}
 
-    # classify first
-    state = classifier_node(state)
+    # only classify if category not already known
+    if not category:
+        state = classifier_node(state)
 
     if state["category"] == "chat":
         reply = ""
@@ -216,3 +217,4 @@ if __name__ == "__main__":
             print(f"🔗 Sources: {final['urls']}")
         print("----------------------------------<-*-*-*->----------------------------------")
         print()
+

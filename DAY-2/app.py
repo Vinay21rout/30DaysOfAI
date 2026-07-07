@@ -229,7 +229,7 @@ if user_input:
         ("💡", "Generating answer", ""),
     ])
 
-    # peek at category without consuming the generator
+    # classify once — used for both UI steps and stream_pipeline
     safe_input = user_input[:500].replace("\n", " ").replace("\r", " ")
     state_peek = {"user_input": safe_input, "category": "", "urls": [], "raw_html": [], "chunks": [], "response": ""}
     state_peek = classifier_node(state_peek)
@@ -256,7 +256,7 @@ if user_input:
     final_state = None
     fetched = False
 
-    for token, result in stream_pipeline(user_input):
+    for token, result in stream_pipeline(user_input, category=category):
         if token is not None:
             full_reply += token
             # update streaming bubble
@@ -281,6 +281,11 @@ if user_input:
                 ])
         else:
             final_state = result
+
+    # use final_state category as ground truth for badge + history
+    if final_state:
+        category = final_state["category"]
+    badge = f"<span class='badge-{'docs' if category == 'docs' else 'chat'}'>{'📄 DOCS MODE' if category == 'docs' else '💬 CHAT MODE'}</span>"
 
     # final bubble without cursor
     response_box.markdown(f"""
