@@ -19,7 +19,7 @@ The goal is not perfection, but **consistency, creativity, and growth** — buil
 | Day | Date | Project Title | Tech Used | Status |
 |:---:|------|---------------|-----------|:------:|
 | 01 | 06 Jul 2025 | [AI Lead Generation Automation](./DAY-1/README.md) | LangGraph · Apify · Groq · Streamlit | ✅ Done |
-| 02 | 07 Jul 2025 | [DocuMind AI – Web RAG Chat Assistant](./DAY-2/README.md) | LangGraph · Groq · DuckDuckGo · Chroma · HuggingFace · Streamlit | ✅ Done |
+| 02 | 07 Jul 2025 | [DocuMind AI – Live Documentation Intelligence Engine](./DAY-2/README.md) | LangGraph · Groq · DuckDuckGo · BeautifulSoup · Chroma · HuggingFace · Streamlit | ✅ Done |
 | 03 | -- | -- | -- | ⏳ Pending |
 | 04 | -- | -- | -- | ⏳ Pending |
 | 05 | -- | -- | -- | ⏳ Pending |
@@ -50,6 +50,16 @@ The goal is not perfection, but **consistency, creativity, and growth** — buil
 | 30 | -- | -- | -- | ⏳ Pending |
 
 > ✅ Done &nbsp;·&nbsp; ⏳ Pending &nbsp;·&nbsp; 🔄 In Progress  
+
+---
+
+## 📌 Project Highlights
+
+### Day 01 — AI Lead Generation Automation
+A fully agentic LangGraph pipeline that scrapes real business listings from Google Maps via Apify, parses and filters leads, then auto-generates personalized cold emails using a single Groq LLM call with placeholder substitution — zero extra API calls per lead. Streamlit UI with live workflow tracker, leads table, email drafts, CSV export, and session history.
+
+### Day 02 — DocuMind AI — Live Documentation Intelligence Engine
+Not a chatbot. A **dual-mode agentic intelligence engine** built on LangGraph that autonomously decides whether a query needs live web knowledge or direct conversation. For technical queries it fires a full pipeline: searches DuckDuckGo, fetches **complete HTML pages** (not snippets), strips noise with BeautifulSoup, chunks with `RecursiveCharacterTextSplitter`, embeds locally with `all-MiniLM-L6-v2`, persists vectors in Chroma, retrieves top-8 semantically relevant chunks, and streams a **grounded, hallucination-resistant answer** via Groq — all in real time with a live pipeline status UI, token-by-token streaming, and source URL cards.
 
 ---
 
