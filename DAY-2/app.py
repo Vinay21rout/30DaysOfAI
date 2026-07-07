@@ -6,7 +6,7 @@ import streamlit as st
 from DocuMind import stream_pipeline, classifier_node
 
 # ── Page Config ───────────────────────────────────────────────────────────────
-st.set_page_config(page_title="DocuMind AI", page_icon="🧠", layout="wide")
+st.set_page_config(page_title="DocuMind AI — Live Doc Intelligence", page_icon="🧠", layout="wide")
 
 # ── Custom CSS ────────────────────────────────────────────────────────────────
 st.markdown("""
@@ -89,7 +89,21 @@ if "docs_count" not in st.session_state:
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("## 🧠 DocuMind AI")
-    st.markdown("<p style='color:#6b7280;font-size:0.85rem'>LangGraph · RAG · Groq · Chroma</p>", unsafe_allow_html=True)
+    st.markdown("<p style='color:#6b7280;font-size:0.85rem'>Live Doc Intelligence · LangGraph · RAG · Groq · Chroma</p>", unsafe_allow_html=True)
+    st.divider()
+
+    st.markdown("### ⚡ Superpowers")
+    st.markdown("""
+    <div style='font-size:0.82rem;line-height:2.2;color:#9ca3af'>
+    🌐 &nbsp;Searches the <b style='color:#e2e8f0'>live web</b> in real time<br>
+    📄 &nbsp;Scrapes <b style='color:#e2e8f0'>full HTML pages</b>, not snippets<br>
+    ✂️ &nbsp;<b style='color:#e2e8f0'>Chunks + embeds</b> every page locally<br>
+    🔍 &nbsp;<b style='color:#e2e8f0'>Semantic retrieval</b> — top 8 chunks<br>
+    🤖 &nbsp;Groq LLM answers <b style='color:#e2e8f0'>only from context</b><br>
+    💾 &nbsp;Chroma DB <b style='color:#e2e8f0'>persisted to disk</b><br>
+    ⚡ &nbsp;Token-by-token <b style='color:#e2e8f0'>streaming</b> output
+    </div>
+    """, unsafe_allow_html=True)
     st.divider()
 
     st.markdown("### 📊 Session Stats")
@@ -129,7 +143,8 @@ with st.sidebar:
 st.markdown("""
 <div class='hero'>
     <h1>🧠 DocuMind AI</h1>
-    <p>Ask anything · I'll chat or search the web and reason over real documents</p>
+    <p style='font-size:1.05rem;color:#a78bfa;font-weight:500'>Live Documentation Intelligence Engine</p>
+    <p style='margin-top:0.3rem'>Ask any technical question &mdash; I scrape the web, read full pages, embed them, retrieve the best context and stream a precise answer &mdash; all in real time</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -159,7 +174,7 @@ with chat_area:
                         st.markdown(f"<div class='source-card'>🌐 <a href='{url}' target='_blank' style='color:#60a5fa;text-decoration:none'>{url}</a></div>", unsafe_allow_html=True)
 
 # ── Chat Input ────────────────────────────────────────────────────────────────
-user_input = st.chat_input("Ask me anything — I'll chat or search the web for you...")
+user_input = st.chat_input("Ask about any library, framework, API, error, concept — I'll find the real answer from live docs...")
 
 if user_input:
     # append user message

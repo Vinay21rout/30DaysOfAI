@@ -26,12 +26,17 @@ class DocuState(TypedDict):
 
 # ── Nodes ─────────────────────────────────────────────────────────────────────
 def classifier_node(state: DocuState) -> DocuState:
-    prompt = f"""Classify the following user query into one of two categories:
-1. 'chat' - if it's a normal conversation or general question.
-2. 'docs' - if it's asking for technical help, code examples, or documentation search.
+    prompt = f"""You are a query router. Classify the query into exactly one category:
+
+- 'docs'  → technical questions, how-to guides, library/framework/API usage, code examples,
+             error messages, installation, configuration, concepts, tools, documentation search,
+             anything that benefits from searching real up-to-date sources on the web.
+- 'chat'  → casual conversation, greetings, opinions, simple math, general knowledge
+             that does NOT need live web sources.
 
 Query: "{state['user_input']}"
-Only return 'chat' or 'docs'."""
+
+When in doubt, choose 'docs'. Only return the single word: docs or chat."""
     result = llm.invoke(prompt).content.strip().lower()
     category = "docs" if "docs" in result else "chat"
     return {**state, "category": category}
@@ -84,9 +89,23 @@ def rag_node(state: DocuState) -> DocuState:
 
     chunks = splitter.create_documents(all_text)
     vectorstore = Chroma.from_documents(chunks, embeddings, persist_directory=CHROMA_DIR)
-    retriever = vectorstore.as_retriever(search_kwargs={"k": 5})
+    retriever = vectorstore.as_retriever(search_kwargs={"k": 8})
     context = "\n\n".join([d.page_content for d in retriever.invoke(state["user_input"])])
-    prompt = f"Use the following context to answer the question.\n\nContext:\n{context}\n\nQuestion: {state['user_input']}\nAnswer:"
+    prompt = f"""You are DocuMind — an expert technical documentation assistant with superpowers.
+You have just scraped and indexed real web pages to answer this question with precision.
+
+Rules:
+- Answer ONLY from the context below. Do NOT hallucinate or use prior knowledge.
+- Be specific, detailed, and structured. Use bullet points, code blocks, or steps where helpful.
+- If the context contains partial info, say what you found and what's missing.
+- If the context has NO relevant info, say: "The fetched pages did not contain enough information. Try rephrasing."
+
+Context (from live web sources):
+{context}
+
+Question: {state['user_input']}
+
+Answer:"""
     reply = ""
     for chunk in llm.stream(prompt):
         reply += chunk.content
@@ -149,9 +168,23 @@ def stream_pipeline(user_input: str):
 
         chunks = splitter.create_documents(all_text)
         vectorstore = Chroma.from_documents(chunks, embeddings, persist_directory=CHROMA_DIR)
-        retriever = vectorstore.as_retriever(search_kwargs={"k": 5})
+        retriever = vectorstore.as_retriever(search_kwargs={"k": 8})
         context = "\n\n".join([d.page_content for d in retriever.invoke(safe_input)])
-        prompt = f"Use the following context to answer the question.\n\nContext:\n{context}\n\nQuestion: {safe_input}\nAnswer:"
+        prompt = f"""You are DocuMind — an expert technical documentation assistant with superpowers.
+You have just scraped and indexed real web pages to answer this question with precision.
+
+Rules:
+- Answer ONLY from the context below. Do NOT hallucinate or use prior knowledge.
+- Be specific, detailed, and structured. Use bullet points, code blocks, or steps where helpful.
+- If the context contains partial info, say what you found and what's missing.
+- If the context has NO relevant info, say: "The fetched pages did not contain enough information. Try rephrasing."
+
+Context (from live web sources):
+{context}
+
+Question: {safe_input}
+
+Answer:"""
         reply = ""
         for chunk in llm.stream(prompt):
             yield chunk.content, None
