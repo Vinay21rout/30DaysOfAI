@@ -342,7 +342,12 @@ You respond in JSON format matching one of these schemas:
    {{"action": "chat", "response": "<your conversational response>"}}
 
 If you call a tool, the system will execute it and return the "Tool Result". You should then analyze the output and decide on the next action (either calling another tool/skill or providing the final conversational answer).
-Note: For GitHub repositories containing multiple skills in subfolders, you MUST extract only the requested folder by specifying the "subdir" parameter (e.g. "subdir": "data-and-analytics").
+
+Constraints:
+- ONLY choose "install_github" or "install_npm" if the user explicitly requests an installation and provides a valid repository URL or package name in their query. Never guess or hallucinate installer URLs.
+- If a query requests a skill or analysis that is not currently installed in the available skills registry, choose the "chat" action to inform the user that the skill/tool is not installed and ask them to install it by providing the correct GitHub URL.
+- For GitHub repositories containing multiple skills in subfolders, you MUST extract only the requested folder by specifying the "subdir" parameter (e.g. "subdir": "data-and-analytics").
+
 Respond with raw JSON only.
 """
 
