@@ -225,17 +225,51 @@ class SkillLoader:
         # Auto-generate skill.json if missing
         if not os.path.exists(skill_path):
             print(f"⚠️  No skill.json found for '{skill_name}', generating default...")
-            default_data = {
-                "name": skill_name,
-                "description": f"Auto-generated skill for {skill_name}",
-                "prompt": f"Provide useful responses related to {skill_name}.",
-                "tools": [
+            
+            skill_md_path = os.path.join(skill_dir, "SKILL.md")
+            prompt = f"Provide useful responses related to {skill_name}."
+            description = f"Auto-generated skill for {skill_name}"
+            tools = []
+            
+            # Read SKILL.md for prompt if it exists (prompt-only skill support)
+            if os.path.exists(skill_md_path):
+                try:
+                    with open(skill_md_path, "r", encoding="utf-8") as f:
+                        md_content = f.read()
+                    
+                    # Parse YAML frontmatter if present
+                    frontmatter_match = re.match(r"^---\s*\n(.*?)\n---\s*\n", md_content, re.DOTALL)
+                    prompt_text = md_content.strip()
+                    if frontmatter_match:
+                        yaml_text = frontmatter_match.group(1)
+                        for line in yaml_text.split("\n"):
+                            if ":" in line:
+                                k, v = line.split(":", 1)
+                                k = k.strip().lower()
+                                v = v.strip()
+                                if k == "name":
+                                    skill_name = v
+                                elif k == "description":
+                                    description = v
+                        prompt_text = md_content[frontmatter_match.end():].strip()
+                    prompt = prompt_text
+                except Exception as e:
+                    print(f"⚠️ Failed to read SKILL.md: {e}")
+            else:
+                # Default tool configuration if no SKILL.md exists
+                tools = [
                     {
                         "name": "run_main",
                         "command": ["python", os.path.join(skill_dir, "main.py")],
                         "args_as": "env"
                     }
                 ]
+            
+            default_data = {
+                "name": skill_name,
+                "description": description,
+                "prompt": prompt,
+                "tools": tools
             }
             os.makedirs(skill_dir, exist_ok=True)
             with open(skill_path, "w") as f:
