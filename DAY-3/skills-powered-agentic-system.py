@@ -415,6 +415,19 @@ if __name__ == "__main__":
     registry = SkillRegistry()
     executor = ToolExecutor()
     loader = SkillLoader(registry)
+
+    # Auto-load existing skills from local directory on startup
+    if os.path.exists(SKILLS_BASE_DIR):
+        for item in os.listdir(SKILLS_BASE_DIR):
+            item_path = os.path.join(SKILLS_BASE_DIR, item)
+            if os.path.isdir(item_path):
+                # Filter out hidden directories or temporary system folders
+                if not item.startswith(".") and item != "__pycache__":
+                    try:
+                        loader.register_skill(item)
+                    except Exception as e:
+                        print(f"⚠️ Failed to auto-register skill '{item}': {e}")
+
     agent = Agent(registry, executor, loader)
     terminal = TerminalInterface(agent)
     terminal.start()
