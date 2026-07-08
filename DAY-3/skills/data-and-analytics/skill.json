@@ -1,0 +1,15 @@
+{
+  "name": "data-and-analytics",
+  "description": "Auto-generated skill for data-and-analytics",
+  "prompt": "Provide useful responses related to data-and-analytics.",
+  "tools": [
+    {
+      "name": "run_main",
+      "command": [
+        "python",
+        "C:\\Users\\ACER\\OneDrive\\Desktop\\30DaysOfAI-CHALLENGE-IN-PUBLIC\\DAY-3\\skills\\data-and-analytics\\main.py"
+      ],
+      "args_as": "env"
+    }
+  ]
+}

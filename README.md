@@ -20,7 +20,7 @@ The goal is not perfection, but **consistency, creativity, and growth** — buil
 |:---:|------|---------------|-----------|:------:|
 | 01 | 06 Jul 2025 | [AI Lead Generation Automation](./DAY-1/README.md) | LangGraph · Apify · Groq · Streamlit | ✅ Done |
 | 02 | 07 Jul 2025 | [DocuMind AI – Live Documentation Intelligence Engine](./DAY-2/README.md) | LangGraph · Groq · DuckDuckGo · BeautifulSoup · Chroma · HuggingFace · Streamlit | ✅ Done |
-| 03 | -- | -- | -- | ⏳ Pending |
+| 03 | 08 Jul 2026 | [Skills-Powered Agentic System](./DAY-3/README.md) | LangChain · Groq · Git · Streamlit | ✅ Done |
 | 04 | -- | -- | -- | ⏳ Pending |
 | 05 | -- | -- | -- | ⏳ Pending |
 | 06 | -- | -- | -- | ⏳ Pending |
@@ -60,6 +60,9 @@ A fully agentic LangGraph pipeline that scrapes real business listings from Goog
 
 ### Day 02 — DocuMind AI — Live Documentation Intelligence Engine
 Not a chatbot. A **dual-mode agentic intelligence engine** built on LangGraph that autonomously decides whether a query needs live web knowledge or direct conversation. For technical queries it fires a full pipeline: searches DuckDuckGo, fetches **complete HTML pages** (not snippets), strips noise with BeautifulSoup, chunks with `RecursiveCharacterTextSplitter`, embeds locally with `all-MiniLM-L6-v2`, persists vectors in Chroma, retrieves top-8 semantically relevant chunks, and streams a **grounded, hallucination-resistant answer** via Groq — all in real time with a live pipeline status UI, token-by-token streaming, and source URL cards.
+
+### Day 03 — Skills-Powered Agentic System
+A modular, safe, and dynamic agentic framework that dynamically loads, installs, and executes tools ("skills") from local directories, GitHub repositories, or npm packages. Features a conversational ReAct reasoning loop that feeds tool outputs back into the LLM context for summarization or chaining, a zero-dependency frontmatter parser to support prompt-only skills (like `SKILL.md`), and comprehensive security/platform compatibility layers (CWD isolation, dynamic interpreter mapping, and Windows-safe folder deletion). Includes a Streamlit chat UI for live interaction, skill registry management, and installation tracking.
 
 ---
 
