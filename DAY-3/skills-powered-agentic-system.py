@@ -5,6 +5,7 @@ import sys
 import io
 import re
 import json
+import shutil
 
 # Force UTF-8 for standard output/error to prevent UnicodeEncodeErrors on Windows
 if sys.platform.startswith("win"):
@@ -121,25 +122,62 @@ class SkillLoader:
     def __init__(self, registry: SkillRegistry):
         self.registry = registry
 
-    def install_from_github(self, repo_url: str, skill_name: str):
+    def install_from_github(self, repo_url: str, skill_name: str, subdir: str = None):
         try:
             skill_name = sanitize_skill_name(skill_name)
             repo_url = validate_url(repo_url)
             skill_dir = safe_skill_path(skill_name)
+            if subdir:
+                # Sanitize subdir path: allow alphanumeric, slash, dash, underscore
+                if not re.fullmatch(r"[a-zA-Z0-9_\-\/]+", subdir):
+                    raise ValueError(f"Invalid subdirectory path: '{subdir}'")
         except ValueError as e:
             print(f"❌ Validation error: {e}")
             return
 
-        safe_print("📥 Cloning into ", skill_dir)
-        result = subprocess.run(
-            ["git", "clone", repo_url, skill_dir],
-            capture_output=True, text=True, timeout=120
-        )
-        if result.stdout:
-            print(result.stdout.strip())
-        if result.returncode != 0:
-            print(f"❌ Clone failed: {result.stderr.strip()}")
-            return
+        if subdir:
+            temp_dir = os.path.realpath(os.path.join(SKILLS_BASE_DIR, f".temp_clone_{skill_name}"))
+            safe_print("📥 Cloning repo to temporary location: ", temp_dir)
+            result = subprocess.run(
+                ["git", "clone", repo_url, temp_dir],
+                capture_output=True, text=True, timeout=120
+            )
+            if result.returncode != 0:
+                print(f"❌ Clone failed: {result.stderr.strip()}")
+                if os.path.exists(temp_dir):
+                    shutil.rmtree(temp_dir)
+                return
+            
+            target_subdir_path = os.path.join(temp_dir, subdir)
+            if not os.path.exists(target_subdir_path):
+                print(f"❌ Subdirectory '{subdir}' not found in the cloned repository.")
+                shutil.rmtree(temp_dir)
+                return
+            
+            # Create final skill directory and move files from subdir
+            os.makedirs(skill_dir, exist_ok=True)
+            for item in os.listdir(target_subdir_path):
+                s = os.path.join(target_subdir_path, item)
+                d = os.path.join(skill_dir, item)
+                if os.path.isdir(s):
+                    shutil.copytree(s, d, dirs_exist_ok=True)
+                else:
+                    shutil.copy2(s, d)
+            
+            # Clean up temp clone
+            shutil.rmtree(temp_dir)
+        else:
+            safe_print("📥 Cloning into ", skill_dir)
+            result = subprocess.run(
+                ["git", "clone", repo_url, skill_dir],
+                capture_output=True, text=True, timeout=120
+            )
+            if result.stdout:
+                print(result.stdout.strip())
+            if result.returncode != 0:
+                print(f"❌ Clone failed: {result.stderr.strip()}")
+                return
+
         self.register_skill(skill_name)
 
     def install_from_npm(self, package_name: str, skill_name: str):
@@ -290,12 +328,13 @@ You respond in JSON format matching one of these schemas:
 1. To use a tool from a skill:
    {{"action": "use_skill", "skill": "<skill_name>", "tool": "<tool_name>", "args": {{"<arg_key>": "<arg_val>"}}}}
 2. To install a skill:
-   {{"action": "install_github", "repo_url": "<url>", "skill": "<name>"}}
+   {{"action": "install_github", "repo_url": "<url>", "skill": "<name>", "subdir": "<optional_subdirectory_path>"}}
    {{"action": "install_npm", "package": "<package>", "skill": "<name>"}}
 3. To talk to the user or give the final answer:
    {{"action": "chat", "response": "<your conversational response>"}}
 
 If you call a tool, the system will execute it and return the "Tool Result". You should then analyze the output and decide on the next action (either calling another tool/skill or providing the final conversational answer).
+Note: For GitHub repositories containing multiple skills in subfolders, you MUST extract only the requested folder by specifying the "subdir" parameter (e.g. "subdir": "data-and-analytics").
 Respond with raw JSON only.
 """
 
@@ -358,7 +397,10 @@ Respond with raw JSON only.
             elif action == "install_github":
                 repo_url = str(decision.get("repo_url", ""))
                 skill_name = str(decision.get("skill", ""))
-                self.loader.install_from_github(repo_url, skill_name)
+                subdir = decision.get("subdir", None)
+                if subdir:
+                    subdir = str(subdir)
+                self.loader.install_from_github(repo_url, skill_name, subdir)
                 break
 
             elif action == "install_npm":
