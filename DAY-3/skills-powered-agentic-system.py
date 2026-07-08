@@ -80,6 +80,15 @@ def safe_print(label: str, value: str):
     """Print the value directly to the console."""
     print(f"{label}{value}")
 
+def force_rmtree(path: str):
+    """Delete a directory path on Windows, clearing read-only permissions if needed."""
+    import stat
+    def onerror(func, path, exc_info):
+        os.chmod(path, stat.S_IWRITE)
+        func(path)
+    if os.path.exists(path):
+        shutil.rmtree(path, onerror=onerror)
+
 # -----------------------------
 # Skill Class
 # -----------------------------
@@ -144,14 +153,13 @@ class SkillLoader:
             )
             if result.returncode != 0:
                 print(f"❌ Clone failed: {result.stderr.strip()}")
-                if os.path.exists(temp_dir):
-                    shutil.rmtree(temp_dir)
+                force_rmtree(temp_dir)
                 return
             
             target_subdir_path = os.path.join(temp_dir, subdir)
             if not os.path.exists(target_subdir_path):
                 print(f"❌ Subdirectory '{subdir}' not found in the cloned repository.")
-                shutil.rmtree(temp_dir)
+                force_rmtree(temp_dir)
                 return
             
             # Create final skill directory and move files from subdir
@@ -165,7 +173,7 @@ class SkillLoader:
                     shutil.copy2(s, d)
             
             # Clean up temp clone
-            shutil.rmtree(temp_dir)
+            force_rmtree(temp_dir)
         else:
             safe_print("📥 Cloning into ", skill_dir)
             result = subprocess.run(
