@@ -1,0 +1,13 @@
+{
+  "name": "calculator",
+  "description": "A skill to perform basic arithmetic operations like addition and subtraction.",
+  "prompt": "Use this skill to add or subtract numbers.",
+  "tools": [
+    {
+      "name": "add",
+      "command": ["python", "add.py"],
+      "args_as": "env"
+    },
+    "subtract"
+  ]
+}
