@@ -21,7 +21,7 @@ The goal is not perfection, but **consistency, creativity, and growth** — buil
 | 01 | 06 Jul 2025 | [AI Lead Generation Automation](./DAY-1/README.md) | LangGraph · Apify · Groq · Streamlit | ✅ Done |
 | 02 | 07 Jul 2025 | [DocuMind AI – Live Documentation Intelligence Engine](./DAY-2/README.md) | LangGraph · Groq · DuckDuckGo · BeautifulSoup · Chroma · HuggingFace · Streamlit | ✅ Done |
 | 03 | 08 Jul 2026 | [Skills-Powered Agentic System](./DAY-3/README.md) | LangChain · Groq · Git · Streamlit | ✅ Done |
-| 04 | -- | -- | -- | ⏳ Pending |
+| 04 | 09 Jul 2026 | [Energy Consumption Prediction using AutoGluon](./DAY-4/README.md) | AutoGluon · Pandas · LightGBM · Python | ✅ Done |
 | 05 | -- | -- | -- | ⏳ Pending |
 | 06 | -- | -- | -- | ⏳ Pending |
 | 07 | -- | -- | -- | ⏳ Pending |
@@ -63,6 +63,9 @@ Not a chatbot. A **dual-mode agentic intelligence engine** built on LangGraph th
 
 ### Day 03 — Skills-Powered Agentic System
 A modular, safe, and dynamic agentic framework that dynamically loads, installs, and executes tools ("skills") from local directories, GitHub repositories, or npm packages. Features a conversational ReAct reasoning loop that feeds tool outputs back into the LLM context for summarization or chaining, a zero-dependency frontmatter parser to support prompt-only skills (like `SKILL.md`), and comprehensive security/platform compatibility layers (CWD isolation, dynamic interpreter mapping, and Windows-safe folder deletion). Includes a Streamlit chat UI for live interaction, skill registry management, and installation tracking.
+
+### Day 04 — Energy Consumption Prediction using AutoGluon
+An AutoML regression model built using **AutoGluon Tabular** to estimate building energy consumption based on occupancy, structural size, temperature, and appliance metrics. Uses the `best_quality` preset to automatically orchestrate multi-layer stacking and bagging across diverse machine learning algorithms (LightGBM, XGBoost, ExtraTrees, RandomForest, and Neural Networks) to construct an optimized `WeightedEnsemble_L3` predictor. Includes local Python execution scripts for quick predictions.
 
 ---
 

@@ -12,7 +12,7 @@ AutoGluon is configured with the `best_quality` preset to perform multi-layer st
 
 ## ⚙️ Technologies Used
 
-- **Python 3.11 / 3.12**
+- **Python 3.12.13** (Required to avoid version mismatch errors when loading the saved model)
 - **AutoGluon Tabular** (AutoML Engine)
 - **Pandas** & **NumPy** (Data manipulation)
 - **Jupyter Notebooks** (Interactive training and testing)
@@ -72,8 +72,11 @@ DAY-4/
 
 ## 🚀 How to Run & Predict
 
+> [!IMPORTANT]
+> The model was trained using **Python 3.12.13**. To prevent version mismatch issues and assertion errors when loading the saved model (`TabularPredictor.load`), please ensure your virtual environment is using **Python 3.12.x** (preferably `3.12.13`).
+
 ### 1. Install Dependencies
-Make sure you have the required packages installed in your active virtual environment:
+Make sure you have the required packages installed in your Python 3.12.x virtual environment:
 ```bash
 pip install autogluon.tabular lightgbm pandas
 ```
