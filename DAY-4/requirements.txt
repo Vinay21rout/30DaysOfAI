@@ -1,0 +1,5 @@
+autogluon.tabular
+fastapi
+uvicorn
+pandas
+pydantic
