@@ -22,7 +22,7 @@ The goal is not perfection, but **consistency, creativity, and growth** — buil
 | 02 | 07 Jul 2025 | [DocuMind AI – Live Documentation Intelligence Engine](./DAY-2/README.md) | LangGraph · Groq · DuckDuckGo · BeautifulSoup · Chroma · HuggingFace · Streamlit | ✅ Done |
 | 03 | 08 Jul 2026 | [Skills-Powered Agentic System](./DAY-3/README.md) | LangChain · Groq · Git · Streamlit | ✅ Done |
 | 04 | 09 Jul 2026 | [Energy Consumption Prediction using AutoGluon](./DAY-4/README.md) | AutoGluon · Pandas · LightGBM · Python | ✅ Done |
-| 05 | -- | -- | -- | ⏳ Pending |
+| 05 | 10 Jul 2026 | [AICore MCP – Suite of AI Engineering MCP Tools](./DAY-5/README.md) | FastMCP · Python · Groq · Pandas · Tiktoken | ✅ Done |
 | 06 | -- | -- | -- | ⏳ Pending |
 | 07 | -- | -- | -- | ⏳ Pending |
 | 08 | -- | -- | -- | ⏳ Pending |
@@ -66,6 +66,9 @@ A modular, safe, and dynamic agentic framework that dynamically loads, installs,
 
 ### Day 04 — Energy Consumption Prediction using AutoGluon
 An AutoML regression model built using **AutoGluon Tabular** to estimate building energy consumption based on occupancy, structural size, temperature, and appliance metrics. Uses the `best_quality` preset to automatically orchestrate multi-layer stacking and bagging across diverse machine learning algorithms (LightGBM, XGBoost, ExtraTrees, RandomForest, and Neural Networks) to construct an optimized `WeightedEnsemble_L3` predictor. Includes local Python execution scripts for quick predictions.
+
+### Day 05 — AICore MCP — Suite of AI Engineering MCP Tools
+A Model Context Protocol (MCP) server built with **FastMCP** that exposes a collection of advanced tools to any MCP host (such as Cursor or Claude Desktop). Features 7 modular toolsets including Token Estimation (`tiktoken`), Markdown utilities (`markdown`), JSON formatting/validation (`json`), Exploratory Dataset summaries (`pandas`), text similarity computation (`scikit-learn`), text chunking/cleaning for RAG, and an LLM-powered prompt improver utilizing **Groq**'s `llama-3.3-70b-versatile` API.
 
 ---
 

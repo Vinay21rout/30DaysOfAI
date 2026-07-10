@@ -1,0 +1,31 @@
+{
+  "name": "data-and-analytics",
+  "description": "Perform data analysis, profiling, correlations, outliers detection, and group performance checks on CSV datasets.",
+  "prompt": "Use this skill to analyze CSV datasets (like StudentsPerformance.csv). Map the user's specific request to one of the targeted tools (summary, correlations, group_analysis, outliers).",
+  "tools": [
+    {
+      "name": "summary",
+      "description": "Get descriptive statistics, dimensions, missing value counts, and categorical column overview.",
+      "command": ["python", "main.py"],
+      "args_as": "env"
+    },
+    {
+      "name": "correlations",
+      "description": "Calculate correlation matrix between numeric columns in the dataset.",
+      "command": ["python", "main.py"],
+      "args_as": "env"
+    },
+    {
+      "name": "group_analysis",
+      "description": "Compute mean, standard deviation, min, max of numeric score columns grouped by categorical columns (requires GROUP_BY and SCORE_COL).",
+      "command": ["python", "main.py"],
+      "args_as": "env"
+    },
+    {
+      "name": "outliers",
+      "description": "Detect outliers in numerical score columns using the IQR method.",
+      "command": ["python", "main.py"],
+      "args_as": "env"
+    }
+  ]
+}

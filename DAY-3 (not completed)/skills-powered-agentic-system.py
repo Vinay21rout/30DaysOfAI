@@ -9,8 +9,11 @@ import shutil
 
 # Force UTF-8 for standard output/error to prevent UnicodeEncodeErrors on Windows
 if sys.platform.startswith("win"):
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
+    try:
+        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+        sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
+    except (AttributeError, ValueError):
+        pass
 import html
 import subprocess
 import urllib.parse
@@ -260,7 +263,7 @@ class SkillLoader:
                 tools = [
                     {
                         "name": "run_main",
-                        "command": ["python", os.path.join(skill_dir, "main.py")],
+                        "command": ["python", "main.py"],
                         "args_as": "env"
                     }
                 ]
@@ -321,17 +324,20 @@ class ToolExecutor:
 
         try:
             skill_dir = safe_skill_path(skill.name)
+            # Build environment variables, forcing UTF-8 and mapping tool name to analysis type
+            env = {
+                **os.environ,
+                "PYTHONIOENCODING": "utf-8",
+                "ANALYSIS_TYPE": tool_name,
+                **{re.sub(r"\W", "_", k.upper()): str(v) for k, v in args.items()}
+            }
             if args_as == "args":
                 # Sanitize each arg value before appending as CLI args (allowing backslashes for Windows paths)
                 safe_args = [re.sub(r"[^\w\s\-.,:/\\]", "", str(v)) for v in args.values()]
                 full_cmd = command + safe_args
-                result = subprocess.run(full_cmd, capture_output=True, text=True, timeout=60, cwd=skill_dir)
+                result = subprocess.run(full_cmd, capture_output=True, text=True, timeout=60, env=env, cwd=skill_dir)
             else:
                 # Pass args as env vars — safest method, no shell injection possible
-                env = {
-                    **os.environ,
-                    **{re.sub(r"\W", "_", k.upper()): str(v) for k, v in args.items()}
-                }
                 result = subprocess.run(command, capture_output=True, text=True, timeout=60, env=env, cwd=skill_dir)
 
             output = result.stdout.strip() or result.stderr.strip()
