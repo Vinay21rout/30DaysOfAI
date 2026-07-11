@@ -14,11 +14,11 @@ def improve_prompt(prompt: str):
     """
 
     response = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
+        model=DEFAULT_MODEL,
         messages=[
             {
                 "role": "system",
-                "content": "Improve prompts for LLMs."
+                "content": "think of you as prompt engineer so simply takes the prompt and improve it as per the llm to provide quality output"
             },
             {
                 "role": "user",
