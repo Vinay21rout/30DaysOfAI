@@ -23,8 +23,8 @@ The goal is not perfection, but **consistency, creativity, and growth** — buil
 | 03 | 08 Jul 2026 | [Skills-Powered Agentic System](./DAY-3/README.md) | LangChain · Groq · Git · Streamlit | ✅ Done |
 | 04 | 09 Jul 2026 | [Energy Consumption Prediction using AutoGluon](./DAY-4/README.md) | AutoGluon · Pandas · LightGBM · Python | ✅ Done |
 | 05 | 10 Jul 2026 | [AICore MCP – Suite of AI Engineering MCP Tools](./DAY-5/README.md) | FastMCP · Python · Groq · Pandas · Tiktoken | ✅ Done |
-| 06 | 11 Jul 2026 | [Discord Webhook MCP Server](./DAY-6/README.md) | FastMCP · Python · Requests · Dotenv | ✅ Done |
-| 07 | 12 Jul 2026 | [LinkedIn Outreach AI Agent](./DAY-7/README.md) | Playwright · Python · Groq · Dotenv | ✅ Done |
+| 06 | 14 Jul 2026 | [Discord Webhook MCP Server](./DAY-6/README.md) | FastMCP · Python · Requests · Dotenv | ✅ Done |
+| 07 | 15 Jul 2026 | [LinkedIn Outreach AI Agent](./DAY-7/README.md) | Playwright · Python · Groq · Dotenv | ✅ Done |
 | 08 | -- | -- | -- | ⏳ Pending |
 | 09 | -- | -- | -- | ⏳ Pending |
 | 10 | -- | -- | -- | ⏳ Pending |
