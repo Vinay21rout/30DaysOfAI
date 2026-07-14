@@ -7,3 +7,4 @@ uv.lock
 *.csv
 chroma_store/
 model_cache/
+state.json
