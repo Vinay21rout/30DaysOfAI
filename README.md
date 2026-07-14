@@ -23,8 +23,8 @@ The goal is not perfection, but **consistency, creativity, and growth** — buil
 | 03 | 08 Jul 2026 | [Skills-Powered Agentic System](./DAY-3/README.md) | LangChain · Groq · Git · Streamlit | ✅ Done |
 | 04 | 09 Jul 2026 | [Energy Consumption Prediction using AutoGluon](./DAY-4/README.md) | AutoGluon · Pandas · LightGBM · Python | ✅ Done |
 | 05 | 10 Jul 2026 | [AICore MCP – Suite of AI Engineering MCP Tools](./DAY-5/README.md) | FastMCP · Python · Groq · Pandas · Tiktoken | ✅ Done |
-| 06 | -- | -- | -- | ⏳ Pending |
-| 07 | -- | -- | -- | ⏳ Pending |
+| 06 | 11 Jul 2026 | [Discord Webhook MCP Server](./DAY-6/README.md) | FastMCP · Python · Requests · Dotenv | ✅ Done |
+| 07 | 12 Jul 2026 | [LinkedIn Outreach AI Agent](./DAY-7/README.md) | Playwright · Python · Groq · Dotenv | ✅ Done |
 | 08 | -- | -- | -- | ⏳ Pending |
 | 09 | -- | -- | -- | ⏳ Pending |
 | 10 | -- | -- | -- | ⏳ Pending |
@@ -69,6 +69,12 @@ An AutoML regression model built using **AutoGluon Tabular** to estimate buildin
 
 ### Day 05 — AICore MCP — Suite of AI Engineering MCP Tools
 A Model Context Protocol (MCP) server built with **FastMCP** that exposes a collection of advanced tools to any MCP host (such as Cursor or Claude Desktop). Features 7 modular toolsets including Token Estimation (`tiktoken`), Markdown utilities (`markdown`), JSON formatting/validation (`json`), Exploratory Dataset summaries (`pandas`), text similarity computation (`scikit-learn`), text chunking/cleaning for RAG, and an LLM-powered prompt improver utilizing **Groq**'s `llama-3.3-70b-versatile` API.
+
+### Day 06 — Discord Webhook MCP Server
+A modular Model Context Protocol (MCP) server built with **FastMCP** that exposes custom toolsets for interacting with Discord webhooks. Features direct text messaging, structured color-customized rich embeds, and local file attachment uploads, facilitating automated notifications and reporting from any MCP host.
+
+### Day 07 — LinkedIn Outreach AI Agent
+An interactive and free browser-automation outreach agent built using **Playwright** and **Groq**'s `llama3-8b-8192` model. Prompts users for keywords, extracts recruitment/HR profiles, dynamically drafts personalized connection notes under 300 characters with public resume link embedding, and uses console approval gates before sending. Preserves login states securely in `state.json` to prevent password exposure and bypass multi-factor authentication locks.
 
 ---
 
